@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
             if(!resposta)
                 throw new NotFound("Nenhum cliente encontrado");
 
-            resp.sendCreated(res, "Clientes obtidos com sucesso", resposta)
+            resp.sendSuccess(res, "Clientes obtidos com sucesso", resposta)
         })
         .catch(erro => resp.sendError(res, "Erro ao listar os clientes", erro));
 });
@@ -23,7 +23,7 @@ router.get('/:id', (req, res) => {
             if(!resposta)
                 throw new NotFound("Nenhum cliente encontrado");
 
-            resp.sendSucess(res, "Cliente obtido com sucesso", resposta)
+            resp.sendSuccess(res, "Cliente obtido com sucesso", resposta)
         })
         .catch(erro => resp.sendError(res, "Erro ao obter o cliente", erro));
 });
@@ -49,7 +49,7 @@ router.delete('/:id', (req, res) => {
     const id = Number(req.params.id);
 
     ClienteController.deletar(id)
-        .then(resposta => resp.sendSucess(res, "Cliente deletado com sucesso", resposta))
+        .then(resposta => resp.sendSuccess(res, "Cliente deletado com sucesso", resposta))
         .catch(erro => resp.sendError(res, "Erro ao deletar cliente", erro));
 });
 

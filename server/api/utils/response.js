@@ -18,12 +18,12 @@ class Response {
             INTERNAL_SERVER_ERROR: 500
         }
           
-        Object.freeze(this.status)
+        Object.freeze(this.status);
     }
 
     //Senders
 
-    sendSucess (res, message, data) {
+    sendSuccess (res, message, data) {
         res.status(this.status.SUCCESS).json({ status: this.status.SUCCESS, message: message, data: data });
     }
 
@@ -61,7 +61,7 @@ class Response {
             data = { code: error.id_error, message: error.message, detais: error.fields};
 
         } else if (error instanceof Error){
-            data = { code: null, message: error.message };
+            data = { code: -1, message: error.message };
         }
 
         res.status(status).json({ status: status, message: message, error: data });

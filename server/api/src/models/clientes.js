@@ -47,10 +47,11 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(100), 
         allowNull: false
     },
-    complemento: {
-        type: DataTypes.STRING(200), 
-        allowNull: false
+    cidade: {
+      type: DataTypes.STRING(50), 
+      allowNull: false
     },
+    complemento: DataTypes.STRING(200),
     cep: {
       type: DataTypes.STRING(8), 
       allowNull: false

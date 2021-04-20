@@ -1,4 +1,5 @@
 const repository = require('../repositories/cliente-repository');
+const validator = require('../utils/validator');
 
 const NotFound = require('../utils/errors/NotFound');
 const InvalidParameter = require('../utils/errors/InvalidParameter');
@@ -11,17 +12,23 @@ class ClienteController {
         if(erros.length)
             return new Promise((res, rej) => rej(new InvalidFields(erros)));
 
-        return repository.create(cliente);
+        return repository.getByEmail(cliente.email)
+            .then(resultado => {
+                if(resultado)
+                    throw new  Error("Já existe um Cliente com este E-mail");
+
+                return repository.create(cliente);
+            });
     }
 
     alterar (id, cliente){
         if(!id)
             return new Promise((res, rej) => rej(new InvalidParameter("id")));
 
-        const erros = this.validar(cliente, false);
+        const erros = this.validar(cliente);
 
         if(erros.length)
-            return new Promise((res, rej) => rej(erros));
+            return new Promise((res, rej) => rej(new InvalidFields(erros)));
 
         return repository.update(id, cliente)
             .then(resultado => {
@@ -56,47 +63,25 @@ class ClienteController {
         return repository.getAll();
     } 
     
-    validar(dados, insercao=true){
-        const validacoes = [{
-            mensagem: "Campo obrigatório nulo", 
-            campo: "nome",
-            valido: (valor) => (valor) ? true : false
-        },
-        {
-            mensagem: "Campo obrigatório nulo", 
-            campo: "sobrenome",
-            valido: (valor) => (valor) ? true : false
-        },
-        {
-            mensagem: "Documento Inválido", 
-            campo: "cpf",
-            valido: (valor) => (valor && (valor.length == 11 || valor.length == 14))
-        },
-        {
-            mensagem: "Campo obrigatório nulo", 
-            campo: "email",
-            valido: (valor) => (valor) ? true : false
-        },
-        {
-            mensagem: "Campo obrigatório nulo", 
-            campo: "telefone",
-            valido: (valor) => (valor) ? true : false
-        },
-        {
-            mensagem: "Campo obrigatório nulo", 
-            campo: "cep",
-            valido: (valor) => (valor) ? true : false
-        }];
+    validar(dados){
+        let validacoes = {
+            "nome": "required",
+            "sobrenome": "required",
+            "cpf": {
+                type: "custom",
+                message: "Documento Inválido",
+                validate: (valor) => (valor && (valor.length == 11 || valor.length == 14))                
+            },
+            "email": "required",
+            "telefone": "required",
+            "logradouro": "required",
+            "numero": "required",
+            "bairro": "required",
+            "cidade": "required",
+            "cep": "required"
+        };
 
-        // Retornar campos invalidos
-        return validacoes.filter((validacao) => {
-            let valor = dados[validacao.campo];
-                      
-            // Caso nao seja insercao libera os campos nao encontrados no objeto
-            if (!insercao && valor == undefined) return false;
-
-            return !validacao.valido(valor);
-        });
+        return validator.check(dados, validacoes);
     }
 }
 

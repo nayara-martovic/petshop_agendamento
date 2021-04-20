@@ -41,8 +41,7 @@ module.exports = {
         allowNull: false,
       },
       complemento: {
-        type: Sequelize.STRING(200),
-        allowNull: false,
+        type: Sequelize.STRING(200)
       },
       bairro: {
         type: Sequelize.STRING(100),
