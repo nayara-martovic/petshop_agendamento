@@ -16,13 +16,10 @@ console.log('this is the environment: ', env);
 let sequelize;
 if (config.environment === 'production') {
   //sequelize = new Sequelize(process.env[config.use_env_variable], config);
-  sequelize = new Sequelize(
-    process.env.DB_NAME,
-    process.env.DB_USER,
-    process.env.DB_PASS, 
+  sequelize = new Sequelize(config.database, config.username, config.password, 
     {
-      host: process.env.DB_HOST,
-      port: process.env.DB_PORT,
+      host: config.host,
+      port: config.port,
       dialect: 'postgres',
       dialectOption: {
         ssl: true,
@@ -32,7 +29,6 @@ if (config.environment === 'production') {
     }
   );
 } else {
-  console.log("Ambiente de teste");
   sequelize = new Sequelize(config.database, config.username, config.password, config);
 }
 
