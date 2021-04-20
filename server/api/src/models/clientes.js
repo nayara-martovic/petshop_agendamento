@@ -44,11 +44,11 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
     },
     bairro: {
-        type: DataTypes.STRING(200), 
+        type: DataTypes.STRING(100), 
         allowNull: false
     },
     complemento: {
-        type: DataTypes.STRING(8), 
+        type: DataTypes.STRING(200), 
         allowNull: false
     },
     cep: {
