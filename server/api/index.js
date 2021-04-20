@@ -2,8 +2,8 @@ const config = require('dotenv-safe');
 const express = require('express');
 
 const resp = require('./utils/response');
-const ValidateRequest = require('./middleware/validate-request');
-const ProductRouter = require('./routes/product-routes');
+const ValidateRequest = require('./middlewares/validate-request');
+const ClienteRoutes = require('./routes/cliente-routes');
 
 config.config();
 const app = express();
@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 
 app.use('*', ValidateRequest);
-app.use('/api/v1/products', ProductRouter);
+app.use('/api/v1/clientes', ClienteRoutes);
 
 app.get('*', (req, res) => resp.sendError(res, "", new BadRequest()));
 
