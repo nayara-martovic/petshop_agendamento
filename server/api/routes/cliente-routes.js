@@ -4,7 +4,8 @@ const resp = require('../utils/response');
 const ClienteController = require('../controllers/cliente-controller');
 const NotFound = require('../utils/errors/NotFound');
 
-const PetRoutes = require('../routes/pet-routes');
+const PetRoutes = require('./pet-routes');
+const AtendimentoRoutes = require('./cliente-atendimento-routes')
 
 router.get('/', (req, res) => {
     ClienteController.getAll()
@@ -56,5 +57,6 @@ router.delete('/:id', (req, res) => {
 });
 
 router.use("/:cliente_id/pets", PetRoutes);
+router.use("/:cliente_id/atendimentos", AtendimentoRoutes);
 
 module.exports = router;

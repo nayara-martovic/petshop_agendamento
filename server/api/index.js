@@ -6,6 +6,7 @@ const ValidateRequest = require('./middlewares/validate-request');
 const BadRequest = require('./utils/errors/BadRequest');
 
 const ClienteRoutes = require('./routes/cliente-routes');
+const AtendimentoRoutes = require('./routes/atendimento-routes');
 
 config.config();
 const app = express();
@@ -14,6 +15,7 @@ app.use(express.json());
 
 app.use('*', ValidateRequest);
 app.use('/api/v1/clientes', ClienteRoutes);
+app.use('/api/v1/atendimentos', AtendimentoRoutes);
 
 app.get('*', (req, res) => resp.sendError(res, "", new BadRequest()));
 
