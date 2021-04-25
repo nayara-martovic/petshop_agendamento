@@ -101,8 +101,8 @@ class PetController {
         }
 
         if(data.data_nascimento) {
-            let patternData = /^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/;
-            if(!patternData.test(data.data_nascimento)){
+            let patternDate = /^[0-9]{2}\/[0-9]{2}\/[0-9]{4}$/;
+            if(!patternDate.test(data.data_nascimento)){
                 errors.addCustomError("data_nascimento", "Digite a data no formato Dia/Mês/Ano");
             }
         }

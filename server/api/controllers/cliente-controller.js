@@ -3,13 +3,17 @@ const repository = require('../repositories/cliente-repository');
 
 const NotFound = require('../utils/errors/NotFound');
 const InvalidParameter = require('../utils/errors/InvalidParameter');
+const InvalidFields = require('../utils/errors/InvalidFields');
 
 class ClienteController {
     add (cliente){
         return repository.getByEmail(cliente.email)
             .then(result => {
-                if(result)
-                    throw new Error("Já existe um Cliente com este E-mail");
+                if(result){
+                    let error = new InvalidFields();
+                    error.addCustomError("email","Já existe um Cliente com este E-mail");
+                    throw error;
+                }
 
                 return repository.create(cliente);
             });
