@@ -1,36 +1,40 @@
 const db =  require('../src/models');
 
+const accepted_fields = ["nome", "sobrenome", "cpf", "email", "telefone", "telefone_secundario", "logradouro", "numero", "bairro", "cidade", "complemento", "cep"];
+const updated_fields = accepted_fields.filter(field => field !== "cpf" && field !== "email");
+
 class ClientesRepository {
-  static getAll() {
+  static getAll(timestamps=false) {
     return db.Cliente.findAll({
       attributes: { 
-        exclude: ['criado_em', 'modificado_em']
-      }
+        exclude: timestamps ? [] : ['criado_em', 'modificado_em']
+      },
+      order: ["id"]
     });
   }
 
-  static getById(id) {
+  static getById(id, timestamps=false) {
     return db.Cliente.findOne({
         where: { id: Number(id) },
         attributes: { 
-          exclude: ['criado_em', 'modificado_em']
+          exclude: timestamps ? [] : ['criado_em', 'modificado_em']
         }
     });
   }
 
-  static getByEmail(email) {
+  static getByEmail(email, timestamps=false) {
     return db.Cliente.findOne({
         where: { email },
         attributes: { 
-          exclude: ['criado_em', 'modificado_em']
+          exclude: timestamps ? [] : ['criado_em', 'modificado_em']
         }
     });
   }
 
   static create(novo_cliente) {
     return db.Cliente.create(novo_cliente, {
-      fields: ["nome", "sobrenome", "cpf", "email", "telefone", "telefone_secundario", "logradouro", "numero", "bairro", "cidade", "complemento", "cep"],
-      returning: ["id", "nome", "sobrenome", "cpf", "email", "telefone", "telefone_secundario", "logradouro", "numero", "bairro", "cidade", "complemento", "cep"]
+      fields: accepted_fields,
+      returning: ["id", ...accepted_fields]
     });
   }
 
@@ -39,8 +43,8 @@ class ClientesRepository {
         if(result) {
             return db.Cliente.update(novo_cliente, { 
               where: { id: Number(id) },
-              fields: ["nome", "sobrenome", "telefone", "telefone_secundario", "logradouro", "numero", "bairro", "cidade", "complemento", "cep"],
-              returning: ["id", "nome", "sobrenome", "cpf", "email", "telefone", "telefone_secundario", "logradouro", "numero", "bairro", "cidade", "complemento", "cep"]
+              fields: updated_fields,
+              returning: ["id", ...accepted_fields]
             });
         }
 
