@@ -3,6 +3,8 @@ const express = require('express');
 
 const resp = require('./utils/response');
 const ValidateRequest = require('./middlewares/validate-request');
+const BadRequest = require('./utils/errors/BadRequest');
+
 const ClienteRoutes = require('./routes/cliente-routes');
 
 config.config();
