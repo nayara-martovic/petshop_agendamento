@@ -16,7 +16,10 @@ module.exports = (sequelize, DataTypes) => {
   Pet.init({
     nome: {
       type: DataTypes.STRING(60), 
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: true
+      }
     },
     cliente_id: {
       type: DataTypes.INTEGER,
@@ -28,18 +31,28 @@ module.exports = (sequelize, DataTypes) => {
     },
     especie: {
       type: DataTypes.STRING(30), 
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: [1,30]
+      }
     },
     raca: {
       type: DataTypes.STRING(40), 
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: true,
+        len: [1,40]
+      }
     },
     data_nascimento: DataTypes.DATE,
-    comportamento: DataTypes.STRING(100),
+    comportamento: {
+      type: DataTypes.STRING(100),
+      validate: {
+        len: [0,100]
+      }
+    },
     observacao: DataTypes.TEXT,
-    /*
-    cliente_id int [ref: > CL.id]
-    */
   }, {
     sequelize,
     modelName: 'Pet',

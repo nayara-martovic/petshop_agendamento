@@ -37,7 +37,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       },
-      modificao_em: {
+      modificado_em: {
         allowNull: false,
         type: Sequelize.DATE
       }
