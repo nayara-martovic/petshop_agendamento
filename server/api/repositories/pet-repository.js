@@ -35,8 +35,14 @@ class PetRepository {
 
     static create(novo_pet){
         return db.Pet.create(novo_pet, {
-            fields: accepted_fields,
-            returning: ["id", ...accepted_fields]
+            fields: accepted_fields
+        }).then(result => {
+            if(result) {
+                let new_result = {};
+                ["id", ...accepted_fields].forEach(field => new_result[field] = result[field]);
+                return new_result;
+            }
+            return result;
         });
     }
 
@@ -45,8 +51,14 @@ class PetRepository {
             if(result) {
                 return db.Pet.update(novo_pet, {
                     where: { id: Number(id), cliente_id: Number(cliente_id) },
-                    fields: updated_fields,
-                    returning: ["id", ...accepted_fields]
+                    fields: updated_fields
+                }).then(result => {
+                    if(result) {
+                        let new_result = {};
+                        ["id", ...accepted_fields].forEach(field => new_result[field] = result[field]);
+                        return new_result;
+                    }
+                    return result;
                 });
             }
 

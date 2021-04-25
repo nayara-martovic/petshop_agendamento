@@ -33,8 +33,14 @@ class ClientesRepository {
 
   static create(novo_cliente) {
     return db.Cliente.create(novo_cliente, {
-      fields: accepted_fields,
-      returning: ["id", ...accepted_fields]
+      fields: accepted_fields
+    }).then(result => {
+        if(result) {
+            let new_result = {};
+            ["id", ...accepted_fields].forEach(field => new_result[field] = result[field]);
+            return new_result;
+        }
+        return result;
     });
   }
 
@@ -43,8 +49,14 @@ class ClientesRepository {
         if(result) {
             return db.Cliente.update(novo_cliente, { 
               where: { id: Number(id) },
-              fields: updated_fields,
-              returning: ["id", ...accepted_fields]
+              fields: updated_fields
+            }).then(result => {
+                if(result) {
+                    let new_result = {};
+                    ["id", ...accepted_fields].forEach(field => new_result[field] = result[field]);
+                    return new_result;
+                }
+                return result;
             });
         }
 
